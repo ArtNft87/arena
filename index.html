@@ -2,21 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <base href="/arena/"> <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Facility Conversion Scheme</title>
+    <base href="/arena/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arena Facility Manager</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div id="facility-container">
-        <h1>Facility Conversion Scheme</h1>
-        <h2 id="mode-title">Basketball Mode</h2>
+    <div class="background-glow"></div>
+
+    <main class="glass-container">
+        <div class="header">
+            <h1>Arena Facility Manager</h1>
+            <p id="mode-title">Basketball Mode</p>
+        </div>
+
         <div id="controls">
             <button data-mode="bball" class="active">Basketball (8)</button>
             <button data-mode="vball">Volleyball (16)</button>
             <button data-mode="hybrid">Hybrid</button>
             <button data-mode="finals">Finals Stage</button>
         </div>
+
         <div id="visualization-wrapper">
             <svg id="visualization" viewBox="0 0 1600 900">
                 <rect class="bg" width="1600" height="900" />
@@ -36,7 +48,11 @@
                 <g id="finals-group"></g>
             </svg>
         </div>
-    </div>
+        
+        <footer>
+            <p>Designed with a modern UI | Current time in Zielona Góra: <span id="current-time"></span></p>
+        </footer>
+    </main>
 
     <script src="script.js"></script>
 </body>
