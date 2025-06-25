@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
         finals: document.getElementById('finals-group'),
     };
     const modeTitle = document.getElementById('mode-title');
+    const vizWrapper = document.getElementById('visualization-wrapper');
 
     function createCourt(type, x, y, w, h, parent) {
         const rect = document.createElementNS(ns, 'rect');
@@ -15,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         rect.setAttribute('y', y);
         rect.setAttribute('width', w);
         rect.setAttribute('height', h);
+        rect.setAttribute('rx', 8); // Add rounded corners to courts
         rect.setAttribute('class', `${type}-court`);
         parent.appendChild(rect);
         return rect;
@@ -79,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 3. Hybrid Layout (Zone A Bball, Zone B Vball)
+    // 3. Hybrid Layout
     for (let row = 0; row < 2; row++) {
         for (let col = 0; col < 2; col++) {
             createBasketballCourt(40 + (col * 380), 110 + (row * 160), 350, 150, groups.hybrid);
@@ -92,14 +94,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 4. Finals Layout
-    // Outer courts (volleyball)
     for (let row=0; row<2; row++) {
         for (let col=0; col<2; col++){
              createVolleyballCourt(40 + (col * 185), 110 + (row * 160), 175, 150, groups.finals);
              createVolleyballCourt(1200 + (col * 185), 110 + (row * 160), 175, 150, groups.finals);
         }
     }
-    // Center stage
     createBasketballCourt(425, 480, 750, 350, groups.finals);
     createFinalsBarrier(405, 470, 790, 370, groups.finals);
 
@@ -108,14 +108,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const buttons = document.querySelectorAll('#controls button');
 
     function setActiveMode(mode) {
-        Object.values(groups).forEach(g => g.style.opacity = '0');
-        groups[mode].style.opacity = '1';
-
-        buttons.forEach(b => b.classList.remove('active'));
-        const activeButton = document.querySelector(`button[data-mode="${mode}"]`);
-        activeButton.classList.add('active');
+        // Add a class to fade out the container
+        vizWrapper.classList.add('switching');
         
-        modeTitle.textContent = activeButton.textContent + ' Mode';
+        // After a short delay, switch the content and fade back in
+        setTimeout(() => {
+            Object.values(groups).forEach(g => g.style.opacity = '0');
+            groups[mode].style.opacity = '1';
+
+            buttons.forEach(b => b.classList.remove('active'));
+            const activeButton = document.querySelector(`button[data-mode="${mode}"]`);
+            activeButton.classList.add('active');
+            
+            modeTitle.textContent = activeButton.textContent + ' Mode';
+            vizWrapper.classList.remove('switching');
+        }, 300); // This timeout should match the transition duration
     }
 
     buttons.forEach(button => {
@@ -124,6 +131,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // --- Live Clock ---
+    const timeElement = document.getElementById('current-time');
+    function updateClock() {
+        const now = new Date();
+        const options = { timeZone: 'Europe/Warsaw', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+        timeElement.textContent = now.toLocaleTimeString('en-GB', options);
+    }
+    
     // Set initial state
     setActiveMode('bball');
+    setInterval(updateClock, 1000);
+    updateClock(); // Initial call
 });
