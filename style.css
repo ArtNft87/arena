@@ -1,0 +1,100 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f2f5;
+    padding: 20px;
+    color: #333;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+#facility-container {
+    width: 95%;
+    max-width: 1200px;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    padding: 25px;
+    box-sizing: border-box;
+}
+
+h1 {
+    text-align: center;
+    color: #1a237e;
+    margin-top: 0;
+}
+
+#mode-title {
+    text-align: center;
+    color: #3f51b5;
+    margin-top: -10px;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+#controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+}
+
+button {
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    background-color: #e8eaf6;
+    color: #3f51b5;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: #c5cae9;
+    transform: translateY(-2px);
+}
+
+button.active {
+    background-color: #3f51b5;
+    color: white;
+    box-shadow: 0 4px 8px rgba(63, 81, 181, 0.3);
+    transform: translateY(-2px);
+}
+
+#visualization-wrapper {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#visualization {
+    display: block;
+    width: 100%;
+}
+
+/* SVG Styles */
+.bg { fill: #f4f6f8; }
+.concessions, .lobby { fill: #dce4e9; }
+.aisle { fill: #e0e0e0; }
+.zone-label { font-size: 18px; font-weight: bold; fill: #546e7a; text-anchor: middle; }
+.text-label { font-size: 16px; font-weight: bold; fill: #37474f; text-anchor: middle; }
+.small-label { font-size: 12px; fill: #555; text-anchor: middle; }
+
+.basketball-court { fill: #ffab91; stroke: #d95f30; stroke-width: 2; }
+.basketball-hoop { fill: none; stroke: #bf360c; stroke-width: 2.5; }
+
+.volleyball-court { fill: #81d4fa; stroke: #0277bd; stroke-width: 1.5; }
+.volleyball-net { stroke: #01579b; stroke-width: 2; stroke-dasharray: 4,3; }
+
+.finals-barrier { fill: rgba(255, 215, 0, 0.15); stroke: #ffd700; stroke-width: 5; }
+
+/* Transition Group Styling */
+#visualization > g {
+    transition: opacity 0.4s ease-in-out;
+}
