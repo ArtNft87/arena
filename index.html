@@ -2,165 +2,42 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="/arena/"> <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Facility Conversion Scheme</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            background-color: #f0f2f5;
-            margin: 0;
-            padding: 20px;
-            color: #333;
-        }
-        h1, h2 {
-            text-align: center;
-            color: #1a237e;
-        }
-        #facility-container {
-            width: 95%;
-            max-width: 1200px;
-            background-color: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            padding: 20px;
-            box-sizing: border-box;
-        }
-        #controls {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        button {
-            padding: 12px 24px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            border: none;
-            border-radius: 8px;
-            background-color: #3f51b5;
-            color: white;
-            transition: background-color 0.3s, transform 0.2s;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-        button:hover {
-            background-color: #303f9f;
-            transform: translateY(-2px);
-        }
-        button.active {
-            background-color: #c51162;
-        }
-        #visualization {
-            width: 100%;
-            aspect-ratio: 16 / 9;
-        }
-        /* SVG Styles */
-        .bg { fill: #e8eaf6; }
-        .concessions, .lobby { fill: #c5cae9; }
-        .aisle { fill: #e0e0e0; }
-        .text-label { font-size: 14px; font-weight: bold; fill: #1a237e; text-anchor: middle; }
-        .small-label { font-size: 10px; fill: #555; text-anchor: middle; }
-
-        .basketball-court { fill: #ffab91; stroke: #bf360c; stroke-width: 1.5; }
-        .basketball-hoop { fill: none; stroke: #bf360c; stroke-width: 2; }
-
-        .volleyball-court { fill: #81d4fa; stroke: #01579b; stroke-width: 1; }
-        .volleyball-net { stroke: #01579b; stroke-width: 1.5; stroke-dasharray: 3,2; }
-        
-        .finals-barrier { fill: none; stroke: #ffd600; stroke-width: 4; stroke-dasharray: 10,5; }
-
-        /* Hide elements by default */
-        #basketball-courts, #volleyball-courts, #hybrid-courts, #finals-layout { display: none; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div id="facility-container">
         <h1>Facility Conversion Scheme</h1>
+        <h2 id="mode-title">Basketball Mode</h2>
         <div id="controls">
-            <button id="btn-bball" class="active">Basketball Mode</button>
-            <button id="btn-vball">Volleyball Mode</button>
-            <button id="btn-hybrid">Hybrid Mode</button>
-            <button id="btn-finals">Finals Stage Mode</button>
+            <button data-mode="bball" class="active">Basketball (8)</button>
+            <button data-mode="vball">Volleyball (16)</button>
+            <button data-mode="hybrid">Hybrid</button>
+            <button data-mode="finals">Finals Stage</button>
         </div>
-        <svg id="visualization" viewBox="0 0 1600 900">
-            <rect class="bg" width="1600" height="900" />
-            <rect class="concessions" x="0" y="0" width="1600" height="60" />
-            <text class="text-label" x="800" y="40">CONCESSIONS</text>
-            <rect class="lobby" x="0" y="840" width="1600" height="60" />
-            <text class="text-label" x="800" y="875">ENTRY LOBBY</text>
-            <rect class="aisle" x="0" y="435" width="1600" height="30" />
-            <text class="text-label" x="800" y="455">CENTER AISLE</text>
+        <div id="visualization-wrapper">
+            <svg id="visualization" viewBox="0 0 1600 900">
+                <rect class="bg" width="1600" height="900" />
+                <rect class="concessions" x="0" y="0" width="1600" height="60" />
+                <text class="text-label" x="800" y="40">CONCESSIONS</text>
+                <rect class="lobby" x="0" y="840" width="1600" height="60" />
+                <text class="text-label" x="800" y="875">ENTRY LOBBY</text>
+                <rect class="aisle" x="0" y="435" width="1600" height="30" />
+                <text class="small-label" x="800" y="455">CENTER AISLE</text>
 
-            <text class="text-label" x="400" y="90">ZONE A</text>
-            <text class="text-label" x="1200" y="90">ZONE B</text>
+                <text class="zone-label" x="400" y="90">ZONE A</text>
+                <text class="zone-label" x="1200" y="90">ZONE B</text>
 
-            <g id="basketball-courts">
-                <g transform="translate(40, 110)">
-                    <rect class="basketball-court" width="350" height="150" x="0" y="0"/>
-                    <circle class="basketball-hoop" cx="25" cy="75" r="15"/>
-                    <circle class="basketball-hoop" cx="325" cy="75" r="15"/>
-                    <rect class="basketball-court" width="350" height="150" x="400" y="0"/>
-                    <circle class="basketball-hoop" cx="425" cy="75" r="15"/>
-                    <circle class="basketball-hoop" cx="725" cy="75" r="15"/>
-                    <rect class="basketball-court" width="350" height="150" x="0" y="170"/>
-                    <circle class="basketball-hoop" cx="25" cy="245" r="15"/>
-                    <circle class="basketball-hoop" cx="325" cy="245" r="15"/>
-                    <rect class="basketball-court" width="350" height="150" x="400" y="170"/>
-                    <circle class="basketball-hoop" cx="425" cy="245" r="15"/>
-                    <circle class="basketball-hoop" cx="725" cy="245" r="15"/>
-                </g>
-                <g transform="translate(810, 110)">
-                    <rect class="basketball-court" width="350" height="150" x="0" y="0"/>
-                    <circle class="basketball-hoop" cx="25" cy="75" r="15"/>
-                    <circle class="basketball-hoop" cx="325" cy="75" r="15"/>
-                    <rect class="basketball-court" width="350" height="150" x="400" y="0"/>
-                    <circle class="basketball-hoop" cx="425" cy="75" r="15"/>
-                    <circle class="basketball-hoop" cx="725" cy="75" r="15"/>
-                    <rect class="basketball-court" width="350" height="150" x="0" y="170"/>
-                    <circle class="basketball-hoop" cx="25" cy="245" r="15"/>
-                    <circle class="basketball-hoop" cx="325" cy="245" r="15"/>
-                    <rect class="basketball-court" width="350" height="150" x="400" y="170"/>
-                    <circle class="basketball-hoop" cx="425" cy="245" r="15"/>
-                    <circle class="basketball-hoop" cx="725" cy="245" r="15"/>
-                </g>
-            </g>
+                <g id="basketball-group"></g>
+                <g id="volleyball-group"></g>
+                <g id="hybrid-group"></g>
+                <g id="finals-group"></g>
+            </svg>
+        </div>
+    </div>
 
-            <g id="volleyball-courts">
-                <g transform="translate(40, 110)">
-                    <script>
-                        for(let row = 0; row < 2; row++) {
-                            for (let col = 0; col < 4; col++) {
-                                let x = col * 185;
-                                let y = row * 160;
-                                document.write(`<rect class="volleyball-court" width="175" height="150" x="${x}" y="${y}"/>`);
-                                document.write(`<line class="volleyball-net" x1="${x + 87.5}" y1="${y}" x2="${x + 87.5}" y2="${y + 150}"/>`);
-                            }
-                        }
-                    </script>
-                </g>
-                <g transform="translate(810, 110)">
-                    <script>
-                        for(let row = 0; row < 2; row++) {
-                            for (let col = 0; col < 4; col++) {
-                                let x = col * 185;
-                                let y = row * 160;
-                                document.write(`<rect class="volleyball-court" width="175" height="150" x="${x}" y="${y}"/>`);
-                                document.write(`<line class="volleyball-net" x1="${x + 87.5}" y1="${y}" x2="${x + 87.5}" y2="${y + 150}"/>`);
-                            }
-                        }
-                    </script>
-                </g>
-            </g>
-
-            <g id="hybrid-courts">
-                <g transform="translate(40, 110)">
-                    <rect class="basketball-court" width="350" height="150" x="0" y="0"/><circle class="basketball-hoop" cx="25" cy="75" r="15"/><circle class="basketball-hoop" cx="325" cy="75" r="15"/>
-                    <rect class="basketball-court" width="350" height="150" x="400" y="0"/><circle class="basketball-hoop" cx="425" cy="75" r="15"/><circle class="basketball-hoop" cx="725" cy="75" r="15"/>
-                    <rect class="basketball-court" width="350" height="150" x="0" y="170"/><circle class="basketball-hoop" cx="25" cy="245" r="15"/><circle class="basketball-hoop" cx="325" cy="245" r="15"/>
-                    <rect class="basketball-court" width="350" height="150" x="400" y="170"/><circle class="basketball-hoop" cx="425" cy="245" r="15"/><circle class="basketball-ho
+    <script src="script.js"></script>
+</body>
+</html>
